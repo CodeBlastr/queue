@@ -7,10 +7,10 @@ use Cake\TestSuite\Fixture\TestFixture;
  * QueuedFixture
  *
  */
-class QueueFixture extends TestFixture
+class QueuesFixture extends TestFixture
 {
 
-    public $table = 'queue';
+    public $table = 'queues';
     /**
      * Fields
      *
@@ -22,8 +22,9 @@ class QueueFixture extends TestFixture
         'type' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'fixed' => null],
         'subject' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'fixed' => null],
         'message' => ['type' => 'text', 'default' => null, 'null' => true, 'comment' => null],
-        'completed' => ['type' => 'boolean', 'length' => null, 'default' => 0, 'null' => false, 'comment' => null],
+        'completed' => ['type' => 'boolean', 'length' => null, 'default' => false, 'null' => false, 'comment' => null],
         'reference' => ['type' => 'text', 'default' => null, 'null' => true, 'comment' => null],
+        'stats' => ['type' => 'text', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'data' => ['type' => 'text', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'creator_id' => ['type' => 'uuid', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'modifier_id' => ['type' => 'uuid', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],

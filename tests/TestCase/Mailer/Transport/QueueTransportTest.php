@@ -27,7 +27,7 @@ class QueueTransportTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CodeBlastrQueue.Queue'
+        'plugin.CodeBlastrQueue.queues'
     ];
 
     /**
@@ -39,9 +39,6 @@ class QueueTransportTest extends TestCase
     {
         parent::setUp();
         $this->QueueTransport = new QueueTransport();
-
-//        $config = TableRegistry::exists('Queue') ? [] : ['className' => 'CodeBlastrQueue\Model\Table\QueueTable'];
-//        $this->Queue = TableRegistry::get('Queue', $config);
     }
 
     /**
@@ -57,7 +54,7 @@ class QueueTransportTest extends TestCase
 
     public function testQueue()
     {
-        $queue = TableRegistry::get('CodeBlastrQueue.Queue');
+        $queue = TableRegistry::get('CodeBlastrQueue.Queues');
         $countBefore = $queue->find('all')->count();
 
         $email = new Email();

@@ -6,7 +6,7 @@ use Cake\ORM\Table;
 use Cake\Database\Schema\Table as Schema;
 
 
-class QueueTable extends Table
+class QueuesTable extends Table
 {
     /**
      * Initialize method
@@ -17,7 +17,7 @@ class QueueTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->table('queue');
+        $this->table('queues');
         $this->displayField('to');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
@@ -32,6 +32,7 @@ class QueueTable extends Table
     protected function _initializeSchema(Schema $schema)
     {
         $schema->columnType('data', 'json');
+        $schema->columnType('stats', 'json');
         return $schema;
     }
 
@@ -55,7 +56,6 @@ class QueueTable extends Table
         if ($notBefore !== null) {
             $data['notbefore'] = new Time($notBefore);
         }
-
         $queue = $this->newEntity($data);
         if ($queue->errors()) {
             throw new Exception('Invalid entity data');
@@ -77,6 +77,19 @@ class QueueTable extends Table
             'limit' => 3,
         ];
         return $data = $this->find('all', $findCond)->all()->toArray();
+    }
+
+    public function markJobDone($id)
+    {
+        debug($id);
+        exit;
+    }
+
+    public function markJobFailed($id, $failureMessage = null)
+    {
+        debug($id);
+        debug($failureMessage);
+        exit;
     }
 
 }

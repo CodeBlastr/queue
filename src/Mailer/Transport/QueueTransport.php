@@ -23,7 +23,7 @@ class QueueTransport extends AbstractTransport
         }
         $transport = $this->_config['transport'];
         $email->transport($transport);
-        $queue = TableRegistry::get('CodeBlastrQueue.Queue');
+        $queue = TableRegistry::get('CodeBlastrQueue.Queues');
         $result = $queue->createJob('Email', ['transport' => $transport, 'settings' => $email]);
         $result['headers'] = '';
         $result['message'] = '';

@@ -1,23 +1,23 @@
 <?php
 namespace CodeBlastrQueue\Test\TestCase\Model\Table;
 
-use CodeBlastrQueue\Model\Table\QueueTable;
+use CodeBlastrQueue\Model\Table\QueuesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Mailer\Email;
 
 /**
- * CodeBlastrQueue\Model\Table\QueueTable Test Case
+ * CodeBlastrQueue\Model\Table\QueuesTable Test Case
  */
-class QueueTableTest extends TestCase
+class QueuesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \CodeBlastrQueue\Model\Table\QueueTable
+     * @var \CodeBlastrQueue\Model\Table\QueuesTable
      */
-    public $Queue;
+    public $Queues;
 
     /**
      * Fixtures
@@ -25,7 +25,7 @@ class QueueTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CodeBlastrQueue.queue'
+        'plugin.CodeBlastrQueue.queues'
     ];
 
     /**
@@ -36,8 +36,8 @@ class QueueTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Queue') ? [] : ['className' => 'CodeBlastrQueue\Model\Table\QueueTable'];
-        $this->Queue = TableRegistry::get('Queue', $config);
+        $config = TableRegistry::exists('Queues') ? [] : ['className' => 'CodeBlastrQueue\Model\Table\QueuesTable'];
+        $this->Queues = TableRegistry::get('Queues', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class QueueTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Queue);
+        unset($this->Queues);
         parent::tearDown();
     }
 
@@ -59,7 +59,7 @@ class QueueTableTest extends TestCase
             ->subject('About Me')
             ->send();
         // now we'll request it
-        $this->assertTrue(!empty($this->Queue->find('all')->toArray()));
+        $this->assertTrue(!empty($this->Queues->find('all')->toArray()));
     }
 
     public function testRequestJob() {
@@ -68,6 +68,6 @@ class QueueTableTest extends TestCase
             ->to('sample@example.com')
             ->subject('About Me')
             ->send();
-        $this->assertTrue(!empty($this->Queue->requestJob()));
+        $this->assertTrue(!empty($this->Queues->requestJob()));
     }
 }
