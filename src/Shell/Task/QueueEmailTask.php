@@ -4,7 +4,6 @@ namespace CodeBlastrQueue\Shell\Task;
 use Cake\Console\Shell;
 use Cake\Log\Log;
 use Cake\Mailer\Email;
-use Exception;
 
 /**
  * Class QueueEmailTask

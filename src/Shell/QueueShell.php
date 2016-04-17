@@ -10,6 +10,7 @@ use Cake\Filesystem\Folder;
 //use Cake\I18n\Number;
 //use Cake\Utility\Inflector;
 use Cake\Mailer\Email;
+use Exception;
 
 
 /**
@@ -80,39 +81,34 @@ class QueueShell extends Shell
 
     public function testrun()
     {
-        // this creates a job
-//        $email = new Email();
-//        $email->template('default', 'default')
-//            ->to('richard@razorit.com')
-//            ->subject('About Me')
-//            ->send();
+        $starttime = time();
+        $this->out('[' . date('Y-m-d H:i:s') . '] Creating Job ...');
+        // this creates a job (try different settings here for testing)
+        $email = new Email();
+        $email->template('default', 'default')
+            ->to('email@example.com')
+            ->subject('About Me')
+            ->emailFormat('both')
+            ->send();
 
         $queus = $this->Queues->requestJob();
         foreach ($queus as $queue) {
-            $this->out('Running Job of type "' . $queue['type'] . '"');
-            $taskname = 'Queue' . $queue['type'];
-            $return = $this->{$taskname}->run($queue['data']);
-
-debug($return);
-exit;
-
-            if ($return) {
+            try {
+                $this->out('Running Job of type "' . $queue['type'] . '"');
+                $taskname = 'Queue' . $queue['type'];
+                $return = $this->{$taskname}->run($queue['data']);
                 $this->Queues->markJobDone($queue['id']);
                 $this->out('Job Finished.');
-            } else {
-                $failureMessage = null;
+            } catch (Exception $e) {
+                $failureMessage = $e->getMessage();
                 if (!empty($this->{$taskname}->failureMessage)) {
                     $failureMessage = $this->{$taskname}->failureMessage;
                 }
                 $this->Queues->markJobFailed($queue['id'], $failureMessage);
                 $this->out('Job did not finish, requeued.');
             }
-
-            debug($queue['type']);
-            debug($queue['data']['transport']);
         }
-
-        $this->out('[' . date('Y-m-d H:i:s') . '] Looking for Job ...');
-        exit;
+        $endtime = time();
+        $this->out('Test run finished.');
     }
 }

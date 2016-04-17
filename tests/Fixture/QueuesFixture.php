@@ -20,10 +20,10 @@ class QueuesFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'uuid', 'length' => null, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null],
         'type' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'fixed' => null],
-        'subject' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'fixed' => null],
-        'message' => ['type' => 'text', 'default' => null, 'null' => true, 'comment' => null],
+//        'subject' => ['type' => 'string', 'length' => 255, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'fixed' => null],
+//        'message' => ['type' => 'text', 'default' => null, 'null' => true, 'comment' => null],
         'completed' => ['type' => 'boolean', 'length' => null, 'default' => false, 'null' => false, 'comment' => null],
-        'reference' => ['type' => 'text', 'default' => null, 'null' => true, 'comment' => null],
+//        'reference' => ['type' => 'text', 'default' => null, 'null' => true, 'comment' => null],
         'stats' => ['type' => 'text', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'data' => ['type' => 'text', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'creator_id' => ['type' => 'uuid', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],

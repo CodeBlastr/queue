@@ -4,10 +4,19 @@ namespace CodeBlastrQueue\Model\Table;
 
 use Cake\ORM\Table;
 use Cake\Database\Schema\Table as Schema;
+use Exception;
 
 
 class QueuesTable extends Table
 {
+    /**
+     * Limit the tries that you'll run before
+     * you stop trying to send a message in the queue
+     *
+     * @var int
+     */
+    public $maxTries = 10;
+
     /**
      * Initialize method
      *
@@ -68,7 +77,7 @@ class QueuesTable extends Table
     {
         $findCond = [
             'conditions' => [
-                'completed' => 0,
+                'completed' => 0
             ],
             'order' => [
                 'created ASC',
@@ -76,20 +85,30 @@ class QueuesTable extends Table
             ],
             'limit' => 3,
         ];
-        return $data = $this->find('all', $findCond)->all()->toArray();
+
+        $jobs = $this->find('all', $findCond)->all()->toArray();
+        for ($i=0; $i<count($jobs); $i++) {
+            if ($jobs[$i]['stats']['tries'] >= $this->maxTries) {
+                unset($jobs[$i]);
+            }
+        }
+        return $jobs;
     }
 
     public function markJobDone($id)
     {
-        debug($id);
-        exit;
+        $entity = $this->get($id);
+        $data = ['completed' => true, 'stats' => ['tries' => ($entity->stats['tries'] + 1), 'message' => $entity->stats['message'] . ($entity->stats['tries'] + 1) . '. ' . 'Success!' . PHP_EOL]];
+        $this->patchEntity($entity, $data, ['validate' => false]);
+        return $this->save($entity);
     }
 
-    public function markJobFailed($id, $failureMessage = null)
+    public function markJobFailed($id, $message = null)
     {
-        debug($id);
-        debug($failureMessage);
-        exit;
+        $entity = $this->get($id);
+        $data = ['completed' => false, 'stats' => ['tries' => ($entity->stats['tries'] + 1), 'message' => $entity->stats['message'] . ($entity->stats['tries'] + 1) . '. ' . $message . PHP_EOL]];
+        $this->patchEntity($entity, $data, ['validate' => false]);
+        return $this->save($entity);
     }
 
 }
