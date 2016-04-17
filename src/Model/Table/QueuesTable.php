@@ -72,7 +72,11 @@ class QueuesTable extends Table
         return $this->save($queue);
     }
 
-
+    /**
+     * Find a job to do.
+     *
+     * @return array
+     */
     public function requestJob()
     {
         $findCond = [
@@ -95,6 +99,12 @@ class QueuesTable extends Table
         return $jobs;
     }
 
+    /**
+     * Mark job done and add some stats
+     *
+     * @param $id
+     * @return bool|\Cake\Datasource\EntityInterface|mixed
+     */
     public function markJobDone($id)
     {
         $entity = $this->get($id);
@@ -103,6 +113,13 @@ class QueuesTable extends Table
         return $this->save($entity);
     }
 
+    /**
+     * Job did not complete, save a few stats so we can see what went wrong.
+     *
+     * @param $id
+     * @param null $message
+     * @return bool|\Cake\Datasource\EntityInterface|mixed
+     */
     public function markJobFailed($id, $message = null)
     {
         $entity = $this->get($id);
