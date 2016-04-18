@@ -85,8 +85,8 @@ class QueueShell extends Shell
         $this->out('[' . date('Y-m-d H:i:s') . '] Creating Job ...');
         // this creates a job (try different settings here for testing)
         $email = new Email();
-        $email->template('CodeBlastrQueue.testeree', 'CodeBlastrQueue.testeroo')
-            ->to('email@example.com')
+        $email->template('CodeBlastrQueue.testeree'/*template*/, 'CodeBlastrQueue.testeroo'/*layout*/)
+            ->to('sample@example.com')
             ->subject('About Me')
             ->emailFormat('both')
             ->send();

@@ -37,7 +37,7 @@ class QueueEmailTask extends Shell
         }
         // handle special cases where there is no function that matches up to the config setting in Cake/Mailer/Email
         if (!empty($settings['viewConfig'])) {
-            $settings['template'] = [$settings['viewConfig']['template'] => $settings['viewConfig']['layout']];
+            $settings['template'] = [$settings['viewConfig']['template'], $settings['viewConfig']['layout']];
         }
         return array_merge($this->defaults, $settings);
     }
@@ -62,7 +62,7 @@ class QueueEmailTask extends Shell
             }
             $email->viewVars($data['vars']);
         }
-        //some debuggging info
+        //some debugging info
         //debug($email->template());
         //debug($email->to());
         return $email->send();
