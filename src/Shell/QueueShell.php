@@ -56,9 +56,13 @@ class QueueShell extends Shell
         $this->out('Usage:');
         $this->out('	cake CodeBlastr.Queue help');
         $this->out('		-> Display this Help message');
-        $this->out('	cake Queue.Queue add <taskname>');
-        $this->out('		-> Try to call the cli add() function on a task');
-        $this->out('		-> tasks may or may not provide this functionality.');
+//        $this->out('	cake Queue.Queue add <taskname>');
+//        $this->out('		-> Try to call the cli add() function on a task');
+//        $this->out('		-> tasks may or may not provide this functionality.');
+        $this->out('	cake Queue.Queue runworker');
+        $this->out('		-> run a queue worker, which will look for a pending task it can execute.');
+        $this->out('		-> the worker will always try to find jobs matching its installed Tasks');
+        $this->out('		-> see "Available Tasks" below.');
         $this->out('	cake Queue.Queue runworker');
         $this->out('		-> run a queue worker, which will look for a pending task it can execute.');
         $this->out('		-> the worker will always try to find jobs matching its installed Tasks');
@@ -72,25 +76,7 @@ class QueueShell extends Shell
     public function runworker()
     {
         $starttime = time();
-
-        debug($this->Queues->requestJob());
-
         $this->out('[' . date('Y-m-d H:i:s') . '] Looking for Job ...');
-        exit;
-    }
-
-    public function testrun()
-    {
-        $starttime = time();
-        $this->out('[' . date('Y-m-d H:i:s') . '] Creating Job ...');
-        // this creates a job (try different settings here for testing)
-        $email = new Email();
-        $email->template('CodeBlastrQueue.testeree'/*template*/, 'CodeBlastrQueue.testeroo'/*layout*/)
-            ->to('sample@example.com')
-            ->subject('About Me')
-            ->emailFormat('both')
-            ->send();
-
         $queus = $this->Queues->requestJob();
         foreach ($queus as $queue) {
             try {
@@ -108,6 +94,30 @@ class QueueShell extends Shell
                 $this->out('Job did not finish, requeued.');
             }
         }
+        $endtime = time();
+        $this->out('Worker finished.');
+    }
+
+    public function testrun()
+    {
+        $starttime = time();
+        $this->out('[' . date('Y-m-d H:i:s') . '] Creating Job ...');
+        // this creates a job (try different settings here for testing)
+        $email = new Email();
+        $email->template('CodeBlastrQueue.testeree'/*template*/, 'CodeBlastrQueue.testeroo'/*layout*/)
+            ->to('sample@example.com') // this email will need to be a real one for testing
+            ->subject('About Me')
+            ->emailFormat('both')
+            ->attachments([
+                'cake.icon.png' => [
+                    'file' => ROOT . '/webroot/img/cake.icon.png',
+                    'mimetype' => 'image/png',
+                    'contentId' => 'my-unique-id'
+                ]
+            ])
+            ->send();
+
+        $this->runworker();
         $endtime = time();
         $this->out('Test run finished.');
     }

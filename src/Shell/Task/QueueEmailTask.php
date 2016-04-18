@@ -52,6 +52,12 @@ class QueueEmailTask extends Shell
         $settings = $this->settings($data['settings']);
         foreach ($settings as $method => $setting) {
             if (method_exists($email, $method)) {
+                // just due to the way call_user_func_array works we need to give attachments fake index on the array
+                if ($method === 'attachments') {
+                    $tempsetting = $setting;
+                    unset($setting);
+                    $setting[] = $tempsetting;
+                }
                 call_user_func_array([$email, $method], (array)$setting);
             }
         }
